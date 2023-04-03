@@ -76,7 +76,7 @@ router.post(
         bcrypt.compareSync(req.body.password, registeredUser.password)
       ) {
         req.session.userId=registeredUser.user_id
-        res.status(200).json({ message: "Hoşgeldin sue!" });
+        res.status(200).json({ message: `Hoşgeldin ${registeredUser.username}!`});
       } else {
         res.status(401).json({ message: "Geçersiz kriter!" });
       }
@@ -104,7 +104,7 @@ router.post(
 
   router.get(
     "/logout",
-     (req, res, next) => {
+     (req, res) => {
         if(req.session){
           req.session.destroy(err=>{
             if(err){

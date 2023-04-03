@@ -9,10 +9,10 @@ const Users = require("../users/users-model");
   }
 */
 function sinirli(req, res, next) {
-  if(req.session && req.session.userId){
-    next()
-  }else{
-    res.status(401).json({ "message": "Geçemezsiniz!"})
+  if (req.session && req.session.userId) {
+    next();
+  } else {
+    res.status(401).json({ message: "Geçemezsiniz!" });
   }
 }
 
@@ -71,12 +71,13 @@ async function usernameVarmi(req, res, next) {
 async function sifreGecerlimi(req, res, next) {
   try {
     const password = req.body.password;
-    if (password === undefined) {
-      res.status(422).json({ message: "Şifre girin" });
-    } else if (password.length < 4) {
+    if(password===undefined){
       res.status(422).json({ message: "Şifre 3 karakterden fazla olmalı" });
+    }else if (password.length < 4) {
+      res.status(422).json({ message: "Şifre 3 karakterden fazla olmalı" });
+    } else {
+      next();
     }
-    next();
   } catch (error) {
     next(error);
   }

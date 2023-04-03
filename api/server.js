@@ -22,14 +22,14 @@ const usersRouter=require("./users/users-router")
 const authRouter=require("./auth/auth-router")
 
 const sessionConfig={
-  name:"codebuster",
+  name:"cikolatacips",
   secret:process.env.SESSION_SECRET || "ratgele secret",
   cookie:{
-    maxAge:1000*10000, //10000 sn
+    maxAge:1000*100, //100 sn
     secure:process.env.SECURE_COOKIE  || false
   },
   httpOnly:true, //js den erişim yapılmaması için güvenlik
-  resave:false, //her sayfaya yeniden geldiğinde yeni cooki kaydetmeyecek
+  resave:false, //her sayfaya yeniden geldiğinde yeni cookie kaydetmeyecek
   saveUninitialized:false //KVKK için izin almak gerekiyor
 }
 
