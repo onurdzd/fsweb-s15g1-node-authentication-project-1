@@ -1,6 +1,7 @@
 const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
+const session = require('express-session')
 
 /**
   Kullanıcı oturumlarını desteklemek için `express-session` paketini kullanın!
@@ -17,9 +18,22 @@ const cors = require("cors");
 
 const server = express();
 
+const sessionConfig={
+  name:"codebuster",
+  secret:process.env.SESSION_SECRET || "ratgele secret",
+  cookie:{
+    maxAge:1000*10000, //10000 sn
+    secure:process.env.SECURE_COOKIE  || false
+  },
+  httpOnly:true, //js den erişim yapılmaması için güvenlik
+  resave:false, //her sayfaya yeniden geldiğinde yeni cooki kaydetmeyecek
+  saveUninitialized:false //KVKK için izin almak gerekiyor
+}
+
 server.use(helmet());
 server.use(express.json());
 server.use(cors());
+server.use(session(sessionConfig)) //header altında cookie gönderecek
 
 server.get("/", (req, res) => {
   res.json({ api: "up" });
