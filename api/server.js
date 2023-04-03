@@ -18,6 +18,9 @@ const session = require('express-session')
 
 const server = express();
 
+const usersRouter=require("./users/users-router")
+const authRouter=require("./auth/auth-router")
+
 const sessionConfig={
   name:"codebuster",
   secret:process.env.SESSION_SECRET || "ratgele secret",
@@ -38,6 +41,9 @@ server.use(session(sessionConfig)) //header altında cookie gönderecek
 server.get("/", (req, res) => {
   res.json({ api: "up" });
 });
+
+server.use("/api/auth",authRouter);
+server.use("/api/users",usersRouter);
 
 server.use((err, req, res, next) => { // eslint-disable-line
   res.status(err.status || 500).json({
