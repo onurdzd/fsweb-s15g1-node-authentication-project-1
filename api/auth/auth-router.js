@@ -75,7 +75,7 @@ router.post(
         registeredUser &&
         bcrypt.compareSync(req.body.password, registeredUser.password)
       ) {
-        req.session.userId=registeredUser.user_id
+        req.session.userId=registeredUser.user_id //cookie ye id gönderdi
         res.status(200).json({ message: `Hoşgeldin ${registeredUser.username}!`});
       } else {
         res.status(401).json({ message: "Geçersiz kriter!" });
@@ -104,16 +104,23 @@ router.post(
 
   router.get(
     "/logout",
-     (req, res) => {
-        if(req.session){
+     (req, res,next) => {
+      try {
+        if(req.session.user_id){
           req.session.destroy(err=>{
             if(err){
-              res.status(400).json({ "message": "Oturum bulunamadı!"}) //oturum olmasa bile burayı göstermiyor
+              res.status(500).json({ "message": "deneme"}) //oturum olmasa bile burayı göstermiyor
             }else{
               res.status(200).json({ "message": "Çıkış yapildi"})
             }
           })
+        }else{
+          res.status(200).json({message:"Oturum bulunamadı!"})
         }
+      } catch (error) {
+        next(error)
+      }
+      
     }
   );
 

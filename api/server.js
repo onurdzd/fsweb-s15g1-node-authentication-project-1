@@ -2,6 +2,7 @@ const express = require("express");
 const helmet = require("helmet");
 const cors = require("cors");
 const session = require('express-session')
+const SessionStore =require("connect-session-knex")(session);
 
 /**
   Kullanıcı oturumlarını desteklemek için `express-session` paketini kullanın!
@@ -28,6 +29,13 @@ const sessionConfig={
     maxAge:1000*100, //100 sn
     secure:process.env.SECURE_COOKIE  || false
   },
+  store: new SessionStore({
+    knex:require("../data/db-config"),
+    tableName:"sessions",
+    sidFieldName:"sid",
+    createTable:true,
+    clearInterval:1000*60*60,
+  }),
   httpOnly:true, //js den erişim yapılmaması için güvenlik
   resave:false, //her sayfaya yeniden geldiğinde yeni cookie kaydetmeyecek
   saveUninitialized:false //KVKK için izin almak gerekiyor

@@ -9,11 +9,16 @@ const Users = require("../users/users-model");
   }
 */
 function sinirli(req, res, next) {
-  if (req.session && req.session.userId) {
-    next();
-  } else {
-    res.status(401).json({ message: "Geçemezsiniz!" });
+  try {
+    if (req.session && req.session.userId) {
+      next();
+    } else {
+      res.status(401).json({ message: "Geçemezsiniz!" });
+    }
+  } catch (error) {
+    next(error)
   }
+  
 }
 
 /*
@@ -26,8 +31,8 @@ function sinirli(req, res, next) {
 */
 async function usernameBostami(req, res, next) {
   try {
-    const user = await Users.goreBul(req.body);
-    if (user) {
+    const existUser = await Users.goreBul(req.body);
+    if (existUser) {
       res.status(422).json({ message: "Username kullaniliyor" });
     } else {
       next();
@@ -47,8 +52,8 @@ async function usernameBostami(req, res, next) {
 */
 async function usernameVarmi(req, res, next) {
   try {
-    const user = await Users.goreBul(req.body);
-    if (user) {
+    const existUser = await Users.goreBul(req.body);
+    if (existUser) {
       next();
     } else {
       res

@@ -17,8 +17,13 @@ function goreBul(filtre) {
 /**
   verilen user_id li kullanıcıya çözümlenir, kullanıcı { user_id, username } içerir
  */
-function idyeGoreBul(user_id) {
-  return db("users").where("user_id",user_id).first()
+async function idyeGoreBul(user_id) {
+  const result=await db("users").where("user_id", user_id).first();
+
+  return {
+    "user_id": result.uder_id,
+    "username": result.username
+  }
 }
 
 /**
